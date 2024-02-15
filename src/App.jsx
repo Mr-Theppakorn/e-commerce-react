@@ -61,7 +61,8 @@ function App() {
     return () => {
       unsubscribe();
     };
-
+  const api = import.meta.env.VITE_REACT_APP_API
+ console.log(api);
   }, [auth, dispatch]);
 
   if (loading) {
