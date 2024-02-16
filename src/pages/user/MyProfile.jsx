@@ -51,7 +51,7 @@ const MyProfile = () => {
         <div className='container mx-auto'>
             <div className='w-2/3 mx-auto border border-base-200 shadow-xl m-20 p-10 '>
                 <div className='text-2xl font-bold text-center'>Your Profile</div>
-                <div class="flex flex-col items-center">
+                <div className="flex flex-col items-center">
                     <div className="avatar m-5">
                         <div className="w-56 rounded-full">
                             <img src={image?.url ? image.url : 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'} />

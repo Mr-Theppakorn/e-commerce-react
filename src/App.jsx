@@ -5,7 +5,6 @@ import { auth } from "./assets/firebase"
 import { addUser } from "./store/slices/userSlice"
 import { useSelector } from 'react-redux';
 import { getCurrentUser } from "./api/auth"
-import { divide } from 'lodash';
 const Header = React.lazy(() => import("./components/Header"));
 const Login = React.lazy(() => import("./pages/auth/Login"));
 const Register = React.lazy(() => import("./pages/auth/Register"));
@@ -70,8 +69,8 @@ function App() {
 
   return (
     <Suspense fallback={<div className='flex justify-center items-center h-screen'>
-      <div class=" animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" role="status" aria-label="loading">
-        <span class="sr-only">Loading...</span>
+      <div className=" animate-spin inline-block w-10 h-10 border-[3px] border-current border-t-transparent text-blue-600 rounded-full" role="status" aria-label="loading">
+        <span className="sr-only">Loading...</span>
       </div>
     </div>}>
       <Header user={user} />

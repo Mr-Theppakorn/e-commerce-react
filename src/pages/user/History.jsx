@@ -19,7 +19,6 @@ const History = () => {
         getUserOrder(token)
             .then((res) => {
                 setOrders(res.data)
-                console.log(res.data);
             }).catch((err) => {
                 console.log(err);
             });

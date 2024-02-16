@@ -18,7 +18,7 @@ export default function SubList() {
             .then((res) => {
                 setSubs(res.data);
                 setLoading(false);
-                console.log(res.data);
+
             }).catch((err) => {
                 setLoading(false);
                 console.log(err);

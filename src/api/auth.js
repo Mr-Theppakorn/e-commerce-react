@@ -17,6 +17,7 @@ export const updateUser = async (token, text) => {
     });
 }
 
+
 export const getCurrentUser = async (token) => {
     return await axios.post(`${api}/get-user`, {}, {
         headers: {

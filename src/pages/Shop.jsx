@@ -54,7 +54,6 @@ export default function Shop() {
             .then((res) => {
                 setCategories(res.data);
                 setLoading(false);
-                console.log(res.data);
             }).catch((err) => {
                 setLoading(false);
                 console.log(err);
@@ -67,7 +66,6 @@ export default function Shop() {
             .then((res) => {
                 setSubs(res.data);
                 setLoading(false);
-                console.log(res.data);
             }).catch((err) => {
                 setLoading(false);
                 console.log(err);
@@ -119,7 +117,6 @@ export default function Shop() {
     const priceChange = (event, newValue) => {
         dispatch(searchQuery({ text: "" }));
         setValue(newValue);
-        console.log(newValue);
         setTimeout(() => {
             setTime(!time)
         }, 300)

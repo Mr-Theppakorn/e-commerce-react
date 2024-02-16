@@ -3,7 +3,6 @@ import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 
 const Orders = ({ orders, handleStatus }) => {
-    console.log(orders);
 
     return (
         <div className="overflow-x-auto">
@@ -34,8 +33,8 @@ const Orders = ({ orders, handleStatus }) => {
                     </tr>
                 </thead>
                 {orders?.map((o) => (
-                    <tbody>
-                        <tr key={o._id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <tbody key={o._id}>
+                        <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                             <th scope="row" className="p-2 md:px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                                 {o.paymentIntent.payment_intent}
                             </th>

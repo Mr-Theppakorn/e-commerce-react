@@ -54,7 +54,7 @@ const CategoryForm = ({ user: { token } }) => {
                 console.log(err);
             });
     }
-    console.log(subList);
+
 
     const loadingSub = () => {
         getSub()

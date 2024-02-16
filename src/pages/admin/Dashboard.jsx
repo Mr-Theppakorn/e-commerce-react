@@ -24,7 +24,6 @@ const Dashboard = ({ user }) => {
         setLoading(true);
         getProductList()
             .then((res) => {
-                console.log(res.data);
                 setProducts(res.data);
                 setLoading(true);
             }).catch((err) => {
@@ -47,7 +46,6 @@ const Dashboard = ({ user }) => {
         getAllUsers(user.token)
             .then((res) => {
                 setUsers(res.data)
-                console.log(res.data);
             }).catch((err) => {
                 console.log(err);
             })
@@ -64,7 +62,6 @@ const Dashboard = ({ user }) => {
     const totalRevenue = orders.reduce((acc, item) => {
         return acc + item.paymentIntent.amount_total / 100
     }, 0)
-    console.log(orders);
 
     return (
         <AdminLayout>

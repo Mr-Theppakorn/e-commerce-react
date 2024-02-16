@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 import firebase from "firebase/compat/app";
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,12 +12,9 @@ import { userLogout } from '../store/slices/userSlice'
 import { useNavigate } from 'react-router-dom';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
-import Tooltip from '@mui/material/Tooltip';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import Search from './forms/Search';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';;
 
 const settings = [
 
@@ -44,19 +40,33 @@ const settings = [
 ];
 
 const Header = () => {
-    const [anchorElUser, setAnchorElUser] = React.useState(false);
-    const [drawerOpen, setDrawerOpen] = useState(false);
     const user = useSelector(state => state.user);
     const cart = useSelector(state => state.cart);
+    const [drawerOpen, setDrawerOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const menuRef = useRef();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const handleOpenUserMenu = (event) => {
-        setAnchorElUser(event.currentTarget);
+    const handleClickOutside = (event) => {
+        if (menuRef.current && !menuRef.current.contains(event.target)) {
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        document.addEventListener('click', handleClickOutside);
+        return () => {
+            document.removeEventListener('click', handleClickOutside);
+        };
+    }, []);
+
+    const handleOpenUserMenu = () => {
+        setIsOpen(!isOpen);
     };
 
     const handleCloseUserMenu = () => {
-        setAnchorElUser(false);
+        setIsOpen(false);
     };
 
     const onLogout = () => {
@@ -69,7 +79,7 @@ const Header = () => {
             id: ''
         }));
         navigate('/login');
-        setAnchorElUser(false);
+        setIsOpen(false);
     }
 
     const totalPrice = (cart) => {
@@ -79,7 +89,6 @@ const Header = () => {
         }, 0);
         return total;
     };
-
 
     return (
         <Box sx={{ flexGrow: 2 }} className="sticky top-0 z-10">
@@ -148,50 +157,58 @@ const Header = () => {
                             </div>
                         </div>
                     </div>
-                    <Tooltip title="Open settings">
-                        <Box sx={{ flexGrow: 0 }}>
-                            {user.token &&
-                                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                    <Avatar alt="Tao" src={user?.image?.url} />
-                                </IconButton>
-                            }
-                            <Menu
-                                sx={{ mt: '45px' }}
-                                id="menu-appbar"
-                                anchorEl={anchorElUser}
-                                anchorOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: 'top',
-                                    horizontal: 'right',
-                                }}
-                                open={Boolean(anchorElUser)}
-                                onClose={handleCloseUserMenu}
-                            >
-                                {user.role === 'admin' && <MenuItem onClick={handleCloseUserMenu}>
-                                    <Link component="a" to='/admin/dashboard' textAlign="center">Admin</Link>
-                                </MenuItem>}
-                                {settings.map((setting, index) => (
-                                    setting.name === 'Logout' ? (
-                                        <MenuItem key={index} onClick={onLogout}>
-                                            <Typography textAlign="center">{setting.name}<LoginIcon /></Typography>
-                                        </MenuItem>
-                                    ) : (
-                                        <MenuItem key={index} onClick={handleCloseUserMenu}>
-                                            <Link to={`/${setting.path}`} textAlign="center">{setting.name}</Link>
-                                        </MenuItem>
-                                    )
+                    <div className="relative inline-block" ref={menuRef}>
+                        <div className="flex items-center">
+                            {user.token && (
+                                <button onClick={handleOpenUserMenu} className="p-0">
+                                    <img
+                                        src={user?.image?.url}
+                                        alt="User Avatar"
+                                        className="w-10 h-10 rounded-full object-cover"
+                                    />
+                                </button>
+                            )}
 
+                        </div>
+
+                        {isOpen && (
+                            <div className="absolute right-0 top-4 p-2 mt-12 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                {user.token && user.role === "admin" && (
+                                    <Link
+                                        to="/admin/dashboard"
+                                        onClick={handleCloseUserMenu}
+                                        className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                    >
+                                        Admin
+                                    </Link>
+                                )}
+                                {settings.map((setting, index) => (
+                                    <div key={index}>
+                                        {setting.name === 'Logout' ? (
+                                            <button
+                                                onClick={onLogout}
+                                                className=" px-4 py-2 font-semibold text-red-400 text-sm hover:bg-gray-100 hover:text-red-600 w-full flex items-center justify-between"
+                                            >
+                                                {setting.name}
+                                                <LogoutIcon />
+                                            </button>
+                                        ) : (
+                                            <Link
+                                                to={`/${setting.path}`}
+                                                onClick={handleCloseUserMenu}
+                                                className="block px-4 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                                            >
+                                                {setting.name}
+                                            </Link>
+                                        )}
+                                    </div>
                                 ))}
-                            </Menu>
-                        </Box>
-                    </Tooltip>
+                            </div>
+                        )}
+                    </div>
                 </Toolbar>
             </AppBar>
-        </Box>
+        </Box >
     )
 }
 

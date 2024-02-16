@@ -1,8 +1,8 @@
 import axios from 'axios';
 const api = import.meta.env.VITE_REACT_APP_API
 
-export const createPaymentIntent = async (totalAfterDiscount, products, coupon, authtoken) => {
-    return await axios.post(`${api}/payment`, { totalAfterDiscount, products, couponApplied: coupon }, {
+export const createPaymentIntent = async (products, coupon, authtoken) => {
+    return await axios.post(`${api}/payment`, { products, couponApplied: coupon }, {
         headers: {
             authtoken
         }
