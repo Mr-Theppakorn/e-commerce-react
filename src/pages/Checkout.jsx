@@ -49,7 +49,7 @@ const Checkout = () => {
 
     const handlePayment = async () => {
         const stripe = await loadStripe("pk_test_51NrGyoEx1pbrXeqOHIUruAVgxAfR2EK0v3QHq2Ft2b5mWNxLpLuvJukNUrtcAP76yaB9t8uDl4dgbzfr912QyFzh00ZL7jWLIG");
-        createPaymentIntent(products, coupon, token)
+        createPaymentIntent(products, token)
             .then((res) => {
                 const session = res.data;
                 const result = stripe.redirectToCheckout({
