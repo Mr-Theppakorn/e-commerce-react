@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
     Container,
     Box,
@@ -86,6 +86,7 @@ const Login = () => {
                 <Typography variant="h4" color="initial" className="text-center mb-5">
                     Login
                 </Typography>
+                <div className="mb-5">Free User: pongteedee@gmail.com Password: 123456789</div>
                 <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
                     <div className="mb-5">
                         <TextField
