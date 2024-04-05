@@ -65,8 +65,8 @@ export const uploadImages = async (authtoken, image) => {
     });
 }
 
-export const removeImages = async (authtoken, public_id) => {
-    return await axios.post(`${api}/remove-image`, { public_id }, {
+export const removeImages = async (authtoken, public_id, _id) => {
+    return await axios.post(`${api}/remove-image`, { public_id, _id }, {
         headers: {
             authtoken
         }
