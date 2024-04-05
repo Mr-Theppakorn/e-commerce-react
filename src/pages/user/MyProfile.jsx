@@ -1,37 +1,37 @@
 import React from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { changeImage, updateUser } from '../../api/auth';
-import Resizer from 'react-image-file-resizer'
-import { updateImage } from '../../store/slices/userSlice';
+import { updateImage, updateUserName } from '../../store/slices/userSlice';
 import { useState } from 'react';
+
+export const covertBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+            resolve(fileReader.result);
+        };
+        fileReader.onerror = (error) => {
+            reject(error);
+        };
+    });
+}
 
 const MyProfile = () => {
     const dispatch = useDispatch();
     const [text, setText] = useState('');
     const { name, token, image } = useSelector(state => state.user);
-    const imageResize = (e) => {
 
+    const imageResize = async (e) => {
         let file = e.target.files[0];
-        if (file) {
-            Resizer.imageFileResizer(
-                file,
-                720,
-                720,
-                'JPEG',
-                100,
-                0,
-                (uri) => {
-                    changeImage(token, uri, image?.public_id)
-                        .then((res) => {
-                            dispatch(updateImage(res.data))
-                        })
-                        .catch((err) => {
-                            console.log(err);
-                        });
-                },
-                'base64'
-            );
-        }
+        const base64 = await covertBase64(file);
+        changeImage(token, base64, image?.public_id)
+            .then((res) => {
+                dispatch(updateImage(res.data))
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     };
 
     const handleName = (e) => {
@@ -41,7 +41,8 @@ const MyProfile = () => {
     const handleSubmit = () => {
         updateUser(token, text)
             .then((res) => {
-                console.log(res.data);
+                dispatch(updateUserName(res.data.name))
+
             }).catch((err) => {
                 console.log(err);
             });
