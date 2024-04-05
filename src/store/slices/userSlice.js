@@ -17,6 +17,12 @@ const userSlice = createSlice({
         addUser: (state, action) => {
             return action.payload;
         },
+        updateUserName: (state, action) => {
+            return {
+                ...state,
+                name: action.payload
+            };
+        },
         updateImage: (state, action) => {
             return {
                 ...state,
@@ -31,6 +37,6 @@ const userSlice = createSlice({
 
 });
 
-export const { addUser, userLogout, updateImage } = userSlice.actions;
+export const { addUser, userLogout, updateImage, updateUserName } = userSlice.actions;
 export const userReducer = userSlice.reducer;
 
