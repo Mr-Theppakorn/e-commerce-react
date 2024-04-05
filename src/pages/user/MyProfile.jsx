@@ -19,8 +19,8 @@ export const covertBase64 = (file) => {
 
 const MyProfile = () => {
     const dispatch = useDispatch();
-    const [text, setText] = useState('');
     const { name, token, image } = useSelector(state => state.user);
+    const [text, setText] = useState(name);
 
     const imageResize = async (e) => {
         let file = e.target.files[0];
